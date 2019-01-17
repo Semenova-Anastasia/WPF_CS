@@ -1,0 +1,104 @@
+﻿<Window x:Class="List_of_employees.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:List_of_employees"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="468.513" Width="1218.671">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="auto"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <ListBox x:Name="lstDepartment" Grid.Column="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ListBox x:Name="lstEmloyees" Grid.Column="1">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding}"/>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button x:Name="btnGetInfoDep" Grid.Column="0" Padding="2" Content="Получить информацию" FontFamily="Comic Sans MS" />
+                <Button x:Name="btnDelDep" Grid.Column="1" Padding="2" Content="Удалить" FontFamily="Comic Sans MS" />
+                <Button x:Name="btnAddDep" Grid.Column="2" Padding="2" Content="Добавить" FontFamily="Comic Sans MS" />
+                <Button x:Name="btnGetInfoEmp" Grid.Column="3" Padding="2" Content="Получить информацию" FontFamily="Comic Sans MS" />
+                <Button x:Name="btnDelEmp" Grid.Column="4" Padding="2" Content="Удалить" FontFamily="Comic Sans MS" />
+                <Button x:Name="btnAddEmp" Grid.Column="5" Padding="2" Content="Добавить" FontFamily="Comic Sans MS" />
+            </Grid>
+        </Grid>
+        <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" ResizeBehavior="PreviousAndNext" Height="5"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Padding="7" Background="LightSteelBlue" Height="192">
+                <Grid  x:Name="gridCarDetails" DataContext="{Binding SelectedItem, ElementName=lstEmloyees}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="7" FontFamily="Comic Sans MS" FontSize="22"><Run Text="Название:"/></TextBlock>
+                    <TextBox x:Name="tbName" Margin="5" Grid.Column="1" Text="{Binding Name}"/>
+                    <TextBlock Margin="7" Grid.Row="1" FontFamily="Comic Sans MS" FontSize="22"><Run Text="Номер:"/></TextBlock>
+                    <TextBox x:Name="tbNumber" Margin="5" Grid.Row="1" Grid.Column="1" Text="{Binding Number}"/>
+                </Grid>
+            </Border>
+            <Border Grid.Column="1" Padding="7" Background="LightSteelBlue" Height="192">
+                <Grid  x:Name="gridCarDetails1" DataContext="{Binding SelectedItem, ElementName=lstEmloyees}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Margin="7" FontFamily="Comic Sans MS" FontSize="22"><Run Text="Имя:"/></TextBlock>
+                    <TextBox x:Name="tbFirstName" Margin="5" Grid.Column="1" Text="{Binding FirstName}"/>
+                    <TextBlock Margin="7" Grid.Row="1" FontFamily="Comic Sans MS" FontSize="22"><Run Text="Фамилия:"/></TextBlock>
+                    <TextBox x:Name="tbLastName" Margin="5" Grid.Row="1" Grid.Column="1" Text="{Binding LastName}"/>
+                    <TextBlock Margin="7" Grid.Row="2" FontFamily="Comic Sans MS" FontSize="22"><Run Text="Возраст:"/></TextBlock>
+                    <TextBox x:Name="tbAge" Margin="5" Grid.Row="2" Grid.Column="1" Text="{Binding Age}"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Window>
