@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace List_of_employees.ViewModel
+namespace List_of_employees.ViewModels
 {
-    class DepartmentView
+    class MainViewModel 
     {
     }
 }
