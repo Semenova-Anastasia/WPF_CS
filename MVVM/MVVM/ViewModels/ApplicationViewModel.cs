@@ -15,16 +15,15 @@ namespace MVVM.ViewModels
     {
         Employee selectedEmployee;
         Department selectedDepartment;
-
-        EmployeeViewModel editEmployeeVM;
-        //DepartmentViewModel editDepartVM;
-
+        Employee rememberEmployee = new Employee();
+        Department rememberDepartment = new Department();
+        
         IFileService fileService;
         IDialogService dialogService;
 
         public ObservableCollection<Employee> EmployeesDB { get; set; }
         public ObservableCollection<Department> DepartmentsDB { get; set; }
-        public IEnumerable<Employee> ListBoxSource { get; set; }
+        public IEnumerable<Employee> ListViewSource { get; set; }
 
         // команда сохранения файла
         private RelayCommand saveCommand;
@@ -79,37 +78,40 @@ namespace MVVM.ViewModels
             }
         }
 
-        // команда добавления нового объекта
-        private RelayCommand addCommand;
-        public RelayCommand AddCommand
+        // команды добавления нового объекта
+        private RelayCommand addEmployee;
+        public RelayCommand AddEmployee
         {
             get
             {
-                return addCommand ??
-                  (addCommand = new RelayCommand(obj =>
+                return addEmployee ??
+                  (addEmployee = new RelayCommand(obj =>
                   {
-                      Employee employee = new Employee(SelectedDepartment.Id); 
+                      Employee employee = new Employee(SelectedDepartment.Id);
                       EmployeesDB.Insert(0, employee);
                       SelectedEmployee = employee;
-                      EmployeeEditingWindow employeeEditView = new EmployeeEditingWindow();
-                      editEmployeeVM = new EmployeeViewModel(selectedEmployee);
-                      employeeEditView.DataContext = editEmployeeVM;
-                      if (employeeEditView.ShowDialog() == true)
-                      {
-                          SelectedEmployee = editEmployeeVM.Employee;
-                          MessageBox.Show("Изменения сохранены");
-                          LoadData();
-                      }
-                      else
-                      {
-                          EmployeesDB.Remove(employee);
-                          MessageBox.Show("Изменения не сохранены");
-                          LoadData();
-                      }
+                      LoadData();
+                  }));
+            }
+        }
+        private RelayCommand addDepartment;
+        public RelayCommand AddDepartment
+        {
+            get
+            {
+                return addDepartment ??
+                  (addDepartment = new RelayCommand(obj =>
+                  {
+                      Department department = new Department();
+                      DepartmentsDB.Insert(DepartmentsDB.Count, department);
+                      SelectedDepartment = department;
+                      UpdateDepartments();
+                      LoadData();
                   }));
             }
         }
 
+        // команда удаления объекта
         private RelayCommand removeCommand;
         public RelayCommand RemoveCommand
         {
@@ -123,11 +125,26 @@ namespace MVVM.ViewModels
                           EmployeesDB.Remove(employee);
                           LoadData();
                       }
+                      if (obj is Department department)
+                      {
+                          for (int i = EmployeesDB.Count - 1; i >= 0; i--)
+                          {
+                              if (EmployeesDB[i].DepartmentId == SelectedDepartment.Id)
+                              {
+                                  EmployeesDB.RemoveAt(i);
+                                  Console.WriteLine(i);
+                              }
+                          }
+                          DepartmentsDB.Remove(department);
+                          UpdateDepartments();
+                          LoadData();
+                      }
                   },
-                 (obj) => EmployeesDB.Count > 0));
+                 (obj) => (EmployeesDB.Count > 0)||(DepartmentsDB.Count > 0)));
             }
         }
 
+        // команда копирования объекта
         private RelayCommand doubleCommand;
         public RelayCommand DoubleCommand
         {
@@ -152,36 +169,71 @@ namespace MVVM.ViewModels
             }
         }
 
-        private RelayCommand editEmployee;
-        public RelayCommand EditEmployee
+        // команды сохранения изменений объекта
+        private RelayCommand saveEmployee;
+        public RelayCommand SaveEmployee
         {
             get
             {
-                return editEmployee ??
-                    (editEmployee = new RelayCommand(obj =>
+                return saveEmployee ??
+                    (saveEmployee = new RelayCommand(obj =>
                     {
-                        if (obj is Employee)
-                        {
-                            EmployeeEditingWindow employeeEditView = new EmployeeEditingWindow();
-                            editEmployeeVM = new EmployeeViewModel(selectedEmployee);
-                            employeeEditView.DataContext = editEmployeeVM;
-                            if (employeeEditView.ShowDialog() == true)
-                            {
-                                SelectedEmployee = editEmployeeVM.Employee;
-                                MessageBox.Show("Изменения сохранены");
-                                LoadData();
-                            }
-                            else
-                            {
-                                SelectedEmployee.LastName = editEmployeeVM.RememberEmployee.LastName;
-                                SelectedEmployee.Age = editEmployeeVM.RememberEmployee.Age;
-                                SelectedEmployee.FirstName = editEmployeeVM.RememberEmployee.FirstName;
-                                SelectedEmployee.DepartmentId = editEmployeeVM.RememberEmployee.DepartmentId;
-                                MessageBox.Show("Изменения не сохранены");
-                            }
-                        }
+                        SelectedEmployee.FirstName = RememberEmployee.FirstName;
+                        SelectedEmployee.LastName = RememberEmployee.LastName;
+                        SelectedEmployee.Age = RememberEmployee.Age;
+                        SelectedEmployee.DepartmentId = RememberEmployee.DepartmentId;
+                        MessageBox.Show("Изменения сохранены");
+                        //LoadData();
                     },
-                    (obj) => EmployeesDB.Count > 0));
+                    (obj) => SelectedEmployee != null));
+            }
+        }
+        private RelayCommand saveDepartment;
+        public RelayCommand SaveDepartment
+        {
+            get
+            {
+                return saveDepartment ??
+                    (saveDepartment = new RelayCommand(obj =>
+                    {
+                        SelectedDepartment.Title = RememberDepartment.Title;
+                        MessageBox.Show("Изменения сохранены");
+                        //LoadData();
+                    },
+                    (obj) => SelectedDepartment != null));
+            }
+        }
+
+        // команды отмены изменений объекта
+        private RelayCommand cancelChangesEmp;
+        public RelayCommand CancelChangesEmp
+        {
+            get
+            {
+                return cancelChangesEmp ??
+                    (cancelChangesEmp = new RelayCommand(obj =>
+                    {
+                        RememberEmployee.FirstName = SelectedEmployee.FirstName;
+                        RememberEmployee.LastName = SelectedEmployee.LastName;
+                        RememberEmployee.Age = SelectedEmployee.Age;
+                        RememberEmployee.DepartmentId = SelectedEmployee.DepartmentId;
+                        MessageBox.Show("Изменения отменены");
+                    },
+                    (obj) => SelectedEmployee != null));
+            }
+        }
+        private RelayCommand cancelChangesDep;
+        public RelayCommand CancelChangesDep
+        {
+            get
+            {
+                return cancelChangesDep ??
+                    (cancelChangesDep = new RelayCommand(obj =>
+                    {
+                        RememberDepartment.Title = SelectedDepartment.Title;
+                        MessageBox.Show("Изменения отменены");
+                    },
+                    (obj) => SelectedDepartment != null));
             }
         }
 
@@ -190,6 +242,7 @@ namespace MVVM.ViewModels
             get { return selectedEmployee; }
             set
             {
+                Remember(value);
                 selectedEmployee = value;
                 OnPropertyChanged();
             }
@@ -199,12 +252,32 @@ namespace MVVM.ViewModels
             get { return selectedDepartment; }
             set
             {
+                Remember(value);
                 selectedDepartment = value;
                 OnPropertyChanged();
                 LoadData();
             }
         }
-        
+
+        public Employee RememberEmployee
+        {
+            get { return rememberEmployee; }
+            set
+            {
+                rememberEmployee = value;
+                OnPropertyChanged();
+            }
+        }
+        public Department RememberDepartment
+        {
+            get { return rememberDepartment; }
+            set
+            {
+                rememberDepartment = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ApplicationViewModel()
         {
             this.dialogService = new DefaultDialogService();
@@ -219,17 +292,41 @@ namespace MVVM.ViewModels
             };
             DepartmentsDB = new ObservableCollection<Department>
             {
-                new Department{Id=1},
-                new Department{Id=2},
-                new Department{Id=3},
-                new Department{Id=4},
+                new Department{Title="Первый", Id=1},
+                new Department{Title="Второй", Id=2},
+                new Department{Title="Третий", Id=3},
+                new Department{Title="Четвертый", Id=4},
             };
 
         }
+
+        public void Remember(object obj)
+        {
+            if (obj is Employee emp)
+            {
+                RememberEmployee.FirstName = emp.FirstName;
+                RememberEmployee.LastName = emp.LastName;
+                RememberEmployee.Age = emp.Age;
+                RememberEmployee.DepartmentId = emp.DepartmentId;
+            }
+            if(obj is Department dep)
+            {
+                RememberDepartment.Title = dep.Title;
+            }
+        }
+
+        private void UpdateDepartments()
+        {
+            for (int i = 0; i < DepartmentsDB.Count; i++)
+            {
+                DepartmentsDB[i].Id = i + 1;
+            }
+        }
+
         private void LoadData()
         {
-            ListBoxSource = EmployeesDB.ToList().Where(emp => emp.DepartmentId == SelectedDepartment?.Id).ToList();
-            OnPropertyChanged(nameof(ListBoxSource));
+            ListViewSource = EmployeesDB.ToList().Where(emp => emp.DepartmentId == SelectedDepartment?.Id).ToList();
+            OnPropertyChanged(nameof(ListViewSource));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

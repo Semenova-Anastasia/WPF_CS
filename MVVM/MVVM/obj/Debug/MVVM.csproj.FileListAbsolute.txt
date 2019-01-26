@@ -46,7 +46,6 @@ D:\script\04 Продвинутый курс C#\MVVM\MVVM\obj\Debug\Views\Employ
 D:\script\04 Продвинутый курс C#\MVVM\MVVM\obj\Debug\Views\EmployeeEditingWindow.baml
 D:\script\MVVM\MVVM\obj\Debug\Views\EmployeeEditingWindow.g.cs
 D:\script\MVVM\MVVM\obj\Debug\Views\EmployeeEditingWindow.baml
-C:\Users\Kocie\Desktop\MVVM\MVVM\obj\Debug\Views\EmployeeEditingWindow.g.cs
 C:\Users\Kocie\Desktop\MVVM\MVVM\obj\Debug\App.g.cs
 C:\Users\Kocie\Desktop\MVVM\MVVM\obj\Debug\GeneratedInternalTypeHelper.g.cs
 C:\Users\Kocie\Desktop\MVVM\MVVM\obj\Debug\MVVM_MarkupCompile.cache
@@ -56,7 +55,6 @@ C:\Users\Kocie\Desktop\MVVM\MVVM\obj\Debug\MVVM.pdb
 C:\Users\Kocie\Desktop\MVVM\MVVM\bin\Debug\MVVM.exe.config
 C:\Users\Kocie\Desktop\MVVM\MVVM\bin\Debug\MVVM.exe
 C:\Users\Kocie\Desktop\MVVM\MVVM\bin\Debug\MVVM.pdb
-C:\Users\Kocie\Desktop\MVVM\MVVM\obj\Debug\Views\EmployeeEditingWindow.baml
 C:\Users\Kocie\Desktop\MVVM\MVVM\obj\Debug\MVVM.g.resources
 C:\Users\Kocie\Desktop\MVVM\MVVM\obj\Debug\MVVM.Properties.Resources.resources
 C:\Users\Kocie\Desktop\MVVM\MVVM\obj\Debug\MVVM.csproj.GenerateResource.cache

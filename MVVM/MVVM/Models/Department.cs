@@ -11,6 +11,7 @@ namespace MVVM.Models
     public class Department : INotifyPropertyChanged
     {
         private string title = "Департамент";
+        private int id;
 
         public string Title
         {
@@ -22,7 +23,15 @@ namespace MVVM.Models
             }
         }
         
-        public int Id { get; set; }
+        public int Id
+        {
+            get { return id; }
+            set
+            {
+                id = value;
+                OnPropertyChanged();
+            }
+        }
 
 
         public event PropertyChangedEventHandler PropertyChanged;
