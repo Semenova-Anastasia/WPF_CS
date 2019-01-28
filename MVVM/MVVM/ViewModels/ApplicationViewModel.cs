@@ -3,6 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -15,9 +18,16 @@ namespace MVVM.ViewModels
     {
         Employee selectedEmployee;
         Department selectedDepartment;
+        DataRowView selectedRow;
         Employee rememberEmployee = new Employee();
         Department rememberDepartment = new Department();
-        
+        SqlDataAdapter da;
+        //private string connectionString =
+        //        @"  Data Source=(localdb)\MSSQLLocalDB;
+        //            Initial Catalog=Lesson7;
+        //            Integrated Security=True;
+        //            Pooling=False";
+
         IFileService fileService;
         IDialogService dialogService;
 
@@ -236,6 +246,22 @@ namespace MVVM.ViewModels
                     (obj) => SelectedDepartment != null));
             }
         }
+        //команда удаления записи
+        private RelayCommand deleteRow;
+        public RelayCommand DeleteRow
+        {
+            get
+            {
+                return deleteRow ??
+                    (deleteRow = new RelayCommand(obj =>
+                    {
+                        DataRowView rowView = SelectedRow;
+                        rowView.Row.Delete();
+                        da.Update(DataTable);
+                    },
+                    (obj) => SelectedRow != null));
+            }
+        }
 
         public Employee SelectedEmployee
         {
@@ -258,6 +284,15 @@ namespace MVVM.ViewModels
                 LoadData();
             }
         }
+        public DataRowView SelectedRow
+        {
+            get { return selectedRow; }
+            set
+            {
+                selectedRow = value;
+                OnPropertyChanged();
+            }
+        }
 
         public Employee RememberEmployee
         {
@@ -278,10 +313,14 @@ namespace MVVM.ViewModels
             }
         }
 
+        public DataTable DataTable { get; set; }
+
         public ApplicationViewModel()
         {
             this.dialogService = new DefaultDialogService();
             this.fileService = new JsonFileService();
+
+            BindDataGrid();
 
             EmployeesDB = new ObservableCollection<Employee>
             {
@@ -297,7 +336,22 @@ namespace MVVM.ViewModels
                 new Department{Title="Третий", Id=3},
                 new Department{Title="Четвертый", Id=4},
             };
+        }
 
+        private void BindDataGrid()
+        {
+            SqlConnection con = new SqlConnection();
+            con.ConnectionString = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            con.Open();
+            SqlCommand cmd = new SqlCommand(@"select * from [Employees]", con);
+            //cmd.CommandText = @"select * from [Employees]";
+            //cmd.Connection = con;
+            da = new SqlDataAdapter();
+            da.SelectCommand = cmd;
+            DataTable = new DataTable("Employees");
+            da.Fill(DataTable);
+            cmd = new SqlCommand("DELETE FROM [Employees] WHERE ID = @Id", con);
+            da.DeleteCommand = cmd;
         }
 
         public void Remember(object obj)
