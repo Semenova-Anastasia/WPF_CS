@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27703.2026
+VisualStudioVersion = 15.0.28010.2050
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVM", "MVVM\MVVM.csproj", "{6E7B64D4-703A-47FB-B123-52D595E2B26A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MVVM", "MVVM\MVVM.csproj", "{D3D74A7A-23A9-47F3-B2D2-E25ED3E25FDA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6E7B64D4-703A-47FB-B123-52D595E2B26A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E7B64D4-703A-47FB-B123-52D595E2B26A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E7B64D4-703A-47FB-B123-52D595E2B26A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E7B64D4-703A-47FB-B123-52D595E2B26A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D3D74A7A-23A9-47F3-B2D2-E25ED3E25FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3D74A7A-23A9-47F3-B2D2-E25ED3E25FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3D74A7A-23A9-47F3-B2D2-E25ED3E25FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3D74A7A-23A9-47F3-B2D2-E25ED3E25FDA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {04FFB4D2-FC9D-4B6A-82EE-65BB63A0A026}
+		SolutionGuid = {3DC0503A-0FD9-4C39-BA3C-9516BDF925F7}
 	EndGlobalSection
 EndGlobal
