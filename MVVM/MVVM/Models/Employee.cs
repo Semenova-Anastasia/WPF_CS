@@ -1,20 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace MVVM.Models
 {
-    public class Employee : INotifyPropertyChanged
-    {
-        private string firstName;
-        private string lastName;
-        private int age;
-        private int departmentId;
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+    using System.Runtime.CompilerServices;
 
+    [Table("Employee")]
+    public partial class Employee : INotifyPropertyChanged
+    {
+        public int Id { get; set; }
+
+        [Required]
+        [StringLength(50)]
+        private string firstName;
         public string FirstName
         {
             get { return firstName; }
@@ -24,6 +25,10 @@ namespace MVVM.Models
                 OnPropertyChanged();
             }
         }
+
+        [Required]
+        [StringLength(50)]
+        private string lastName;
         public string LastName
         {
             get { return lastName; }
@@ -33,6 +38,8 @@ namespace MVVM.Models
                 OnPropertyChanged();
             }
         }
+
+        private int age;
         public int Age
         {
             get { return age; }
@@ -42,6 +49,8 @@ namespace MVVM.Models
                 OnPropertyChanged();
             }
         }
+
+        private int departmentId;
         public int DepartmentId
         {
             get { return departmentId; }
@@ -51,16 +60,16 @@ namespace MVVM.Models
                 OnPropertyChanged();
             }
         }
-        public Employee(int id)
-        {
-            LastName = "";
-            Age = 0;
-            FirstName = "";
-            DepartmentId = id;
-        }
-        public Employee()
-        {
 
+        private Department department;
+        public virtual Department Department
+        {
+            get { return department; }
+            set
+            {
+                department = value;
+                OnPropertyChanged();
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -5,147 +5,63 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MVVM"
         xmlns:vm="clr-namespace:MVVM.ViewModels"
-        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-         Title="MainWindow" Height="513.5" Width="853" MinHeight="520" MinWidth="850">
+        Title="MainWindow" Height="300" Width="425">
     <Window.DataContext>
-        <vm:ApplicationViewModel/>
+        <vm:MainViewModel/>
     </Window.DataContext>
-    <Window.Resources>
-        <Style TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14" />
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="FontSize" Value="14" />
-        </Style>
-        <Style TargetType="Button">
-            <Setter Property="Width" Value="40" />
-            <Setter Property="Margin" Value="5" />
-        </Style>
-    </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+            <RowDefinition />
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
-        <Menu Grid.ColumnSpan="2" >
-            <MenuItem Header="Файл">
-                <MenuItem Header="Открыть" Command="{Binding OpenCommand}" />
-                <MenuItem Header="Сохранить" Command="{Binding SaveCommand}" />
-            </MenuItem>
-        </Menu>
-        <Grid Margin="5" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Button Grid.Row="0" Width="100" Height="40"
-                    Command="{Binding DeleteRow}"
-                    CommandParameter="{Binding SelectedRow}" Content="Удалить запись" Margin="5"/>
-            <DataGrid Grid.Row="1" VerticalAlignment="Top" Height="182"
-                    AutoGenerateColumns="False" ItemsSource="{Binding DataTable.DefaultView}"
-                    SelectedItem="{Binding SelectedRow}" SelectedIndex="0" IsReadOnly="True">
-                <DataGrid.Columns>
-                    <DataGridTextColumn x:Name="idColumn" Binding="{Binding Id}" 
-                            Header="ID" IsReadOnly="True" Width="Auto"/>
-                    <DataGridTextColumn x:Name="fioColum" Binding="{Binding FirstName}" 
-                            Header="Имя" IsReadOnly="True" Width="Auto"/>
-                    <DataGridTextColumn x:Name="birthdayColumn" Binding="{Binding LastName}" 
-                            Header="Фамилия" IsReadOnly="True" Width="Auto"/>
-                    <DataGridTextColumn x:Name="emailColumn" Binding="{Binding Age}" 
-                            Header="Возраст" IsReadOnly="True" Width="Auto"/>
-                    <DataGridTextColumn x:Name="phoneColumn" Binding="{Binding DepartmentId}" 
-                            Header="Департамент" IsReadOnly="True" Width="Auto"/>
-                </DataGrid.Columns>
-            </DataGrid>
-            <ListView Grid.Row="2" x:Name="listEmpl" 
-                  ItemsSource="{Binding ListViewSource}" SelectedItem="{Binding SelectedEmployee}">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Width="80" DisplayMemberBinding="{Binding FirstName}" Header="Имя"/>
-                        <GridViewColumn Width="80" DisplayMemberBinding="{Binding LastName}" Header="Фамилия"/>
-                        <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding Age}" Header="Возраст" />
-                        <GridViewColumn Width="Auto" DisplayMemberBinding="{Binding DepartmentId}" Header="Департамент" />
-                    </GridView>
-                </ListView.View>
-            </ListView>
-        </Grid>
-        <Grid Grid.Column="1" Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <StackPanel Grid.Row="0" Orientation="Vertical">
-                <ComboBox x:Name="cbDep" ItemsSource="{Binding DepartmentsDB}" 
-                    SelectedItem="{Binding SelectedDepartment}"
-                    SelectedIndex="0" Margin="5" >
-                    <ComboBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Margin="5" Orientation="Horizontal">
-                                <TextBlock Padding="3" Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" />
-                                <TextBlock Padding="3" Text="{Binding Path=Id, UpdateSourceTrigger=PropertyChanged}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ComboBox.ItemTemplate>
-                </ComboBox>
-                <WrapPanel>
-                    <Button Height="40" Command="{Binding AddDepartment}">+</Button>
-                    <Button Width="65"
-                            Command="{Binding RemoveCommand}"
-                            CommandParameter="{Binding SelectedDepartment}">Удалить</Button>
-                </WrapPanel>
-            </StackPanel>
-            <Grid Grid.Column="1" Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <StackPanel Grid.Row="0" Margin="5" DataContext="{Binding RememberDepartment}">
-                    <TextBlock Text="Название" />
-                    <TextBox Text="{Binding Title, UpdateSourceTrigger=PropertyChanged}" />
-                </StackPanel>
-                <WrapPanel Grid.Row="1" Height="auto">
-                    <Button Width="75" Height="40" Margin="5" Command="{Binding SaveDepartment}" Content="Сохранить"/>
-                    <Button Width="60" Height="40" Margin="5" Command="{Binding CancelChangesDep}" Content="Отмена"/>
-                </WrapPanel>
-            </Grid>
-            <StackPanel Grid.Row="2" Margin="5" DataContext="{Binding RememberEmployee}">
-                <TextBlock Text="Выбранный сотрудник"  />
-                <TextBlock Text="Имя" />
-                <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock Text="Фамилия" />
-                <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock Text="Возраст" />
-                <TextBox Text="{Binding Age, UpdateSourceTrigger=PropertyChanged}" />
-                <TextBlock Text="Департамент" />
-                <TextBox Text="{Binding DepartmentId, UpdateSourceTrigger=PropertyChanged}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Name="cbDepartments" ItemsSource="{Binding Departments}" 
+                      SelectedIndex="0"  SelectedItem="{Binding SelectedDepartment}"
+                      SelectedValuePath="Id" Height="auto" Margin="10" 
+                      VerticalContentAlignment="Center">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="Добавить" Margin="5,10" Command="{Binding AddDepCommand}"  />
+                <Button Content="Изменить" Margin="5,10" Command="{Binding EditDepCommand}"
+                        CommandParameter="{Binding ElementName=DGEmployees, Path=SelectedItem}"  />
+                <Button Content="Удалить" Margin="5,10" Command="{Binding DeleteDepCommand}"
+                        CommandParameter="{Binding ElementName=DGEmployees, Path=SelectedItem}"  />
             </StackPanel>
         </Grid>
-        <WrapPanel Grid.Column="1" Grid.Row="2">
-            <Button Width="75" Height="40" Margin="5" Command="{Binding SaveEmployee}">Сохранить</Button>
-            <Button Width="60" Height="40" Margin="5" Command="{Binding CancelChangesEmp}">Отмена</Button>
-        </WrapPanel>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Command="{Binding AddEmployee}">+</Button>
-            <Button Content="2x">
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction
-                            Command="{Binding DoubleCommand}"
-                            CommandParameter="{Binding SelectedEmployee}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </Button>
-            <Button Width="65"
-                    Command="{Binding RemoveCommand}"
-                    CommandParameter="{Binding SelectedEmployee}" Content="Удалить"/>
+        <DataGrid x:Name="DGEmployees" Grid.Row="1" AutoGenerateColumns="False" 
+                  ItemsSource="{Binding Employees, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedEmployee}" CanUserAddRows="False"
+                  IsManipulationEnabled="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" 
+                                    Header="Имя" IsReadOnly="True" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" 
+                                    Header="Фамилия" IsReadOnly="True" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Age, UpdateSourceTrigger=PropertyChanged}" 
+                                    Header="Возраст" IsReadOnly="True" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Department.Title, UpdateSourceTrigger=PropertyChanged}"
+                                    Header="Департамент" IsReadOnly="True" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Добавить" Margin="10" Command="{Binding AddEmpCommand}"  />
+            <Button Content="Изменить" Margin="10" Command="{Binding EditEmpCommand}"
+                    CommandParameter="{Binding ElementName=DGEmployees, Path=SelectedItem}"  />
+            <Button Content="Удалить" Margin="10" Command="{Binding DeleteEmpCommand}"
+                    CommandParameter="{Binding ElementName=DGEmployees, Path=SelectedItem}"  />
         </StackPanel>
     </Grid>
 </Window>
