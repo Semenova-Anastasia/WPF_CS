@@ -1,0 +1,67 @@
+﻿<Window x:Class="MVVM.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVM"
+        xmlns:vm="clr-namespace:MVVM.ViewModels"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="300" Width="425">
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Name="cbDepartments" ItemsSource="{Binding Departments}" 
+                      SelectedIndex="0"  SelectedItem="{Binding SelectedDepartment}"
+                      SelectedValuePath="Id" Height="auto" Margin="10" 
+                      VerticalContentAlignment="Center">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="{Binding Path=Title, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <StackPanel Grid.Column="1" Orientation="Horizontal">
+                <Button Content="Добавить" Margin="5,10" Command="{Binding AddDepCommand}"  />
+                <Button Content="Изменить" Margin="5,10" Command="{Binding EditDepCommand}"
+                        CommandParameter="{Binding ElementName=DGEmployees, Path=SelectedItem}"  />
+                <Button Content="Удалить" Margin="5,10" Command="{Binding DeleteDepCommand}"
+                        CommandParameter="{Binding ElementName=DGEmployees, Path=SelectedItem}"  />
+            </StackPanel>
+        </Grid>
+        <DataGrid x:Name="DGEmployees" Grid.Row="1" AutoGenerateColumns="False" 
+                  ItemsSource="{Binding Employees, Mode=TwoWay}"
+                  SelectedItem="{Binding SelectedEmployee}" CanUserAddRows="False"
+                  IsManipulationEnabled="True">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" 
+                                    Header="Имя" IsReadOnly="True" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" 
+                                    Header="Фамилия" IsReadOnly="True" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Age, UpdateSourceTrigger=PropertyChanged}" 
+                                    Header="Возраст" IsReadOnly="True" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding Department.Title, UpdateSourceTrigger=PropertyChanged}"
+                                    Header="Департамент" IsReadOnly="True" Width="Auto"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Content="Добавить" Margin="10" Command="{Binding AddEmpCommand}"  />
+            <Button Content="Изменить" Margin="10" Command="{Binding EditEmpCommand}"
+                    CommandParameter="{Binding ElementName=DGEmployees, Path=SelectedItem}"  />
+            <Button Content="Удалить" Margin="10" Command="{Binding DeleteEmpCommand}"
+                    CommandParameter="{Binding ElementName=DGEmployees, Path=SelectedItem}"  />
+        </StackPanel>
+    </Grid>
+</Window>
